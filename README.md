@@ -1,3 +1,4 @@
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/--Jhcfwr)
 # Directions: 
 Your task is to make this site interactive (repl.it | github) and accessible. The first section will display to the user a heart emoji thats the same color that the user picks. The second section is a number guessing game that the site will help the user find by saying to guess higher or lower. For the third section, enter all 7 continents and the site will have an image of each of them appear as you do. Lastly, use the color input to pick a color, check the checkbox to say you're not a robot, and click the button to change the website's background color.
 
