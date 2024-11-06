@@ -1,21 +1,4 @@
 //YOUR CODE HERE
-// getRandomInt() - gets a random number between 1 and 100
-const getRandomInt = () => {
-    return Math.floor(Math.random() * 100) + 1; // Returns a random integer between 1 and 100
-};
-
-// is_dark(hex) - takes in a hex number (for example #123456) and returns true if it's dark and false if it's light.
-const is_dark = (hex) => {
-    // Convert hex to RGB
-    let r = parseInt(hex.slice(1, 3), 16);
-    let g = parseInt(hex.slice(3, 5), 16);
-    let b = parseInt(hex.slice(5, 7), 16);
-    
-    // Calculate the brightness
-    let brightness = (r * 0.299 + g * 0.587 + b * 0.114);
-    return brightness < 128; // Returns true if dark
-};
-
 // Section 1: What's Your Favorite Color?
 const radioInput = document.querySelector("#fav_color");
 const radioOutput = document.querySelector("#radio-output");
@@ -37,6 +20,7 @@ const displayColor = (e) => {
 };
 
 radioInput.addEventListener('change', displayColor);
+
 
 // Section 2: Guess the Number (1 to 100)
 const randomNumber = getRandomInt();
@@ -63,53 +47,64 @@ const checkNumber = (e) => {
 
 numInput.addEventListener('change', checkNumber);
 
-// Section 3: Name All 7 Continents
-const continents = ["asia", "africa", "north america", "south america", "antarctica", "europe", "australia"];
-const continentInput = document.querySelector("#continent-input");
-const srContinentAlert = document.querySelector("#sr-continent-alert");
-let guessedContinents = [];
 
-const checkContinent = (e) => {
-    const input = e.target.value.toLowerCase();
-    if (continents.includes(input)) {
-        if (!guessedContinents.includes(input)) {
-            guessedContinents.push(input);
-            srContinentAlert.innerHTML = `Yes, ${input.charAt(0).toUpperCase() + input.slice(1)} is a continent. ${guessedContinents.length} out of 7`;
-            document.querySelector(`#${input.replace(" ", "-")}`).classList.remove("hidden"); // Assuming images have corresponding IDs
-        } else {
-            srContinentAlert.innerHTML = `${input.charAt(0).toUpperCase() + input.slice(1)} has already been selected.`;
-        }
+// Part 3: Name All 7 Continents
+const textInput = document.getElementById('text-input');
+const continentAlert = document.getElementById('sr-continent-alert');
+const continents = ['North America', 'South America', 'Europe', 'Africa', 'Asia', 'Australia', 'Antarctica'];
+let enteredContinents = [];
+
+textInput.addEventListener('input', () => {
+  const userInput = textInput.value.trim().toLowerCase();
+  const userContinents = userInput.split(',').map(item => item.trim().toLowerCase());
+
+  // Check for Canada
+  if (userContinents.includes('canada')) {
+    continentAlert.textContent = 'Canada is not a continent.';
+    return;
+  }
+
+  // Track entered continents and provide feedback
+  userContinents.forEach(continent => {
+    if (continents.map(c => c.toLowerCase()).includes(continent)) {
+      if (!enteredContinents.includes(continent)) {
+        enteredContinents.push(continent);
+        const count = enteredContinents.length;
+        continentAlert.textContent = `Yes! ${continent.charAt(0).toUpperCase() + continent.slice(1)} is a continent. ${count} out of 7`;
+      } else {
+        continentAlert.textContent = `${continent.charAt(0).toUpperCase() + continent.slice(1)} has already been selected.`;
+      }
     } else {
-        srContinentAlert.innerHTML = `${input.charAt(0).toUpperCase() + input.slice(1)} is not a continent.`;
+      continentAlert.textContent = `${continent.charAt(0).toUpperCase() + continent.slice(1)} is not a continent.`;
     }
+  });
 
-    // Select the input for easier re-entry
-    e.target.select();
-};
-
-continentInput.addEventListener('change', checkContinent);
+  // Check if all continents have been named
+  if (enteredContinents.length === continents.length) {
+    continentAlert.textContent = 'Congratulations! You named all 7 continents.';
+  }
+});
 
 // Section 4: Change Background Color
-const colorInput = document.querySelector("#color-input");
-const checkbox = document.querySelector("#robot-checkbox");
-const submitButton = document.querySelector("#submit-button");
-const body = document.body;
-const srBackgroundAlert = document.querySelector("#sr-background-alert");
 
-const changeBackground = (e) => {
-    e.preventDefault();
-
-    if (checkbox.checked) {
-        const color = colorInput.value;
-        body.style.background = color;
-        srBackgroundAlert.innerHTML = `Background color changed to ${color}`;
-    } else {
-        srBackgroundAlert.innerHTML = "Background color not changed. Please, select 'I'm not a robot'.";
-    }
-};
+const colorInput = document.getElementById('color');
+const checkbox = document.getElementById('human');
+const submitButton = document.getElementById('submit');
+const srOutput = document.getElementById('sr-output');
 
 submitButton.addEventListener('click', changeBackground);
-    e.target.select();
+
+function changeBackground(e) {
+    e.preventDefault(); // Prevent the page from reloading
+
+    if (checkbox.checked) {
+        const selectedColor = colorInput.value;
+        document.body.style.background = selectedColor; // Change background color
+        srOutput.textContent = `Background color changed to ${selectedColor}`; // Update output
+    } else {
+        srOutput.textContent = "Background color not changed. Please, select 'I'm not a robot'."; // Update output
+    }
+}
 };
 
 continentInput.addEventListener('change', checkContinent);
